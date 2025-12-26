@@ -3,7 +3,7 @@ const { Telegraf } = require('telegraf');
 
 const app = express();
 
-const apiToken = 'ВАШ_ТОКЕН_ТЕЛЕГРАМ'; // вставьте свой токен
+const apiToken = '6632695365:AAH234LsLWIcoCL5EzKy_kGyj18skhd5xCU'; // вставьте свой токен
 const webhookUrl = `https://gjob-test/bot${apiToken}`; // вставьте свой публичный URL
 
 const bot = new Telegraf(apiToken, {
