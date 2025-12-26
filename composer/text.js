@@ -4,16 +4,25 @@ const axios = require('axios');
 const OPENROUTER_API_KEY = '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';
 
 module.exports = (bot) => {
+  // Обработка команды /start
+  bot.start(async (ctx) => {
+    await ctx.reply('Привет! Я AI-бот. Напиши мне сообщение, и я отвечу тебе с помощью ИИ.');
+  });
+
+  // Обработка любых сообщений
   bot.on('message', async (ctx) => {
+    // Проверяем, это не команда /start, чтобы не было двойных ответов
+    if (ctx.message.text && ctx.message.text.startsWith('/start')) return;
+
     const userMessage = ctx.message.text;
     if (!userMessage) return;
 
     try {
       const response = await axios.post(
-        'https://openrouter.ai/api/v1/chat/completions',
+        'https://openrouter.ai/v1/completions',
         {
           prompt: userMessage,
-          model: 'deepseek/deepseek-chat-v3-0324', // убедитесь, что такая модель поддерживается
+          model: 'deepseek/deepseek-chat-v3-0324', // убедитесь, что модель поддерживается
           max_tokens: 150,
           temperature: 0.7,
         },
