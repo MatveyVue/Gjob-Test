@@ -35,7 +35,7 @@ export default async function handler(req, res) {
 }
 
 async function getOpenRouterResponse(prompt) {
-  const apiUrl = 'https://api.openrouter.ai/v1/completions';
+  const apiUrl = 'https://openrouter.ai/api/v1';
 
   const payload = {
     model: 'deepseek/deepseek-v3.2', // или другой актуальный
