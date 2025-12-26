@@ -1,43 +1,40 @@
-// Импортируем необходимые модули
 const { Telegraf } = require('telegraf');
-const fetch = require('node-fetch'); // убедитесь, что установлен пакет node-fetch
+const fetch = require('node-fetch');
 
-// Токен Telegram бота и API-ключ OpenRouter
-const TELEGRAM_TOKEN = '6632695365:AAH234LsLWIcoCL5EzKy_kGyj18skhd5xCU'; // вставьте свой бот-токен
-const OPENROUTER_API_KEY = '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'; // вставьте ключ OpenRouter
+// Введите свои токены
+const TELEGRAM_TOKEN = '6632695365:AAH234LsLWIcoCL5EzKy_kGyj18skhd5xCU'; // вставьте сюда
+const OPENROUTER_API_KEY = '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'; // вставьте сюда
 
 // Создаем бота
 const bot = new Telegraf(TELEGRAM_TOKEN);
 
-// Обработчик команды /start
 bot.start(async (ctx) => {
   await ctx.reply('Привет! Я Gjob, чем могу помочь.');
 });
 
-// Обработчик любого текстового сообщения
 bot.on('message', async (ctx) => {
-  const userMessage = ctx.message.text || '';
-  console.log('Получено сообщение:', userMessage);
-
-  const response = await getOpenRouterResponse(userMessage);
-  if (response) {
-    await ctx.reply(response);
+  const messageText = ctx.message.text || '';
+  console.log('Получено сообщение:', messageText);
+  const reply = await getResponseFromOpenRouter(messageText);
+  if (reply) {
+    await ctx.reply(reply);
   } else {
     await ctx.reply('Произошла ошибка при обработке вашего сообщения.');
   }
 });
 
-// Функция для отправки запроса к OpenRouter
-async function getOpenRouterResponse(prompt) {
-  const apiUrl = 'https://openrouter.ai/api/v1'; // замените на актуальный API endpoint
+// Функция обращения к OpenRouter API с моделью
+async function getResponseFromOpenRouter(prompt) {
+  const apiEndpoint = 'https://openrouter.ai/api/v1/completions'; // Основной эндпоинт API для генераций
   const payload = {
+    model: 'deepseek/deepseek-chat-v3-0324', // замените на нужную модель, например, 'text-davinci-002' или ту, что есть у вас
     prompt: prompt,
     max_tokens: 200,
     temperature: 0.7,
   };
 
   try {
-    const response = await fetch(apiUrl, {
+    const res = await fetch(apiEndpoint, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -45,18 +42,18 @@ async function getOpenRouterResponse(prompt) {
       },
       body: JSON.stringify(payload),
     });
+    const data = await res.json();
 
-    const data = await response.json();
-    if (response.ok && data && data.choices && data.choices.length > 0) {
+    if (res.ok && data && data.choices && data.choices.length > 0) {
       return data.choices[0].text.trim();
     } else {
       console.error('Ошибка API:', data);
       return null;
     }
   } catch (err) {
-    console.error('При запросе к OpenRouter:', err);
+    console.error('Ошибка при запросе к OpenRouter:', err);
     return null;
   }
 }
 
-module.exports = bot; // экспортируем бота
+module.exports = bot;
