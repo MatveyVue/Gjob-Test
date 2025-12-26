@@ -40,7 +40,7 @@ bot.on('text', async (ctx) => {
 
 // Функция обращения к API
 async function getOpenRouterResponse(prompt) {
-    const apiUrl = 'https://api.openrouter.ai/api/v1/chat/completions'; // Corrected API endpoint
+    const apiUrl = 'https://openrouter.ai/api/v1/chat/completions'; // Corrected API endpoint
     const payload = {
         model: 'deepseek/deepseek-v3.2',
         messages: [{ role: "user", content: prompt }], // Use messages array as required by the API
