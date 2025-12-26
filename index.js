@@ -4,7 +4,7 @@ const { Telegraf } = require('telegraf');
 const app = express();
 
 const apiToken = 'ВАШ_ТОКЕН_ТЕЛЕГРАМ'; // вставьте свой токен
-const webhookUrl = `https://ваш-домен/бот${apiToken}`; // вставьте свой публичный URL
+const webhookUrl = `https://gjob-test/bot${apiToken}`; // вставьте свой публичный URL
 
 const bot = new Telegraf(apiToken, {
   telegram: {
@@ -19,7 +19,7 @@ bot.telegram.setWebhook(webhookUrl)
 
 // Обработка входящих запросов
 app.use(express.json());
-app.use(bot.webhookCallback(`/бот${apiToken}`));
+app.use(bot.webhookCallback(`/bot${apiToken}`));
 
 app.get('/', (_req, res) => {
   res.send('Сервер запущен');
