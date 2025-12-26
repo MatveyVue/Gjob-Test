@@ -38,7 +38,7 @@ async function getOpenRouterResponse(prompt) {
   const apiUrl = 'https://api.openrouter.ai/v1/completions';
 
   const payload = {
-    model: 'deepseek/deepseek-chat-v3-0324', // или другой актуальный
+    model: 'deepseek/deepseek-v3.2', // или другой актуальный
     prompt: prompt,
     max_tokens: 200,
     temperature: 0.7,
