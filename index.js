@@ -1,7 +1,7 @@
 import { Telegraf } from 'telegraf';
 
 const apiToken = '6632695365:AAH234LsLWIcoCL5EzKy_kGyj18skhd5xCU';
-const openRouterApiKey = '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';
+const openRouterApiKey = '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';
 
 const bot = new Telegraf(apiToken);
 
