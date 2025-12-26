@@ -1,7 +1,7 @@
 const { Telegraf } = require('telegraf');
 const fetch = require('node-fetch');
 
-const openRouterApiKey = 'ВАШ_OPENROUTER_API_KEY'; // замените на ваш API-ключ OpenRouter
+const openRouterApiKey = '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'; // замените на ваш API-ключ OpenRouter
 const bot = new Telegraf(token);
 
 // Обработка команды /start
