@@ -1,5 +1,5 @@
-const { Telegraf } = require('telegraf');
 const express = require('express');
+const { Telegraf } = require('telegraf');
 
 const app = express();
 
@@ -11,20 +11,17 @@ const bot = new Telegraf(apiToken, {
     }
 });
 
+// Укажите полный URL вашего вебхука, например, ваш домен + путь
+const webhookUrl = `https://gjob-test.vercel.app/bot${apiToken}`;
+// Устанавливаем webhook при запуске
+bot.telegram.setWebhook(webhookUrl);
+
 app.use(express.json());
 app.use(bot.webhookCallback(`/bot${apiToken}`));
 
-app.get(`/`, async (_req, res) => {
-    try {
-        const url = `https://gjob-test-rj8y.vercel.app/bot${apiToken}`;
-        await bot.telegram.setWebhook(url);
-        res.send("200");
-    } catch {
-        res.send('502')
-    }
-})
-
-bot.use(require('./composer/text.js'));
+app.get('/', (_req, res) => {
+    res.send('Server is running');
+});
 
 app.listen(3212, () => {
     console.log('Server is running on port 3212');
