@@ -40,34 +40,35 @@ bot.on('text', async (ctx) => {
 
 // Функция обращения к API
 async function getOpenRouterResponse(prompt) {
-    const apiUrl = 'https://openrouter.ai/api/v1/chat/completions'; // Corrected API endpoint
-    const payload = {
-        model: 'deepseek/deepseek-v3.2',
-        messages: [{ role: "user", content: prompt }], // Use messages array as required by the API
-        max_tokens: 200,
-        temperature: 0.7,
-    };
+    const apiUrl = 'https://openrouter.ai/api/v1/chat/completions';
+    const modelName = 'deepseek/deepseek-v3.2';
+    const apiKey = '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'; // Replace with your actual API key
 
     try {
         const response = await fetch(apiUrl, {
             method: 'POST',
             headers: {
+                'Authorization': `Bearer ${apiKey}`,
                 'Content-Type': 'application/json',
-                'Authorization': `Bearer ${openRouterApiKey}`,
             },
-            body: JSON.stringify(payload),
+            body: JSON.stringify({
+                model: modelName,
+                messages: [{ role: 'user', content: prompt }],
+            }),
         });
 
-        const data = await response.json();
-
-        if (response.ok && data.choices && data.choices.length > 0) {
-            return data.choices[0].message.content.trim(); // Access the text from the correct field
-        } else {
-            console.error('Ответ API:', data);
+        if (!response.ok) {
+            const error = await response.json();
+            console.error('OpenRouter API Error:', response.status, error);
             return null;
         }
-    } catch (err) {
-        console.error('Ошибка при запросе к OpenRouter:', err);
+
+        const data = await response.json();
+        const reply = data.choices[0]?.message?.content?.trim();
+        return reply || null;
+
+    } catch (error) {
+        console.error('Request failed:', error);
         return null;
     }
 }
