@@ -14,7 +14,7 @@ const bot = new Telegraf(apiToken, {
 });
 
 // Указываем ваш webhook URL (замените домен и путь)
-const webhookUrl = `https://ваш-домен.com/bot${apiToken}`;
+const webhookUrl = `https://gjob-test.vercel.app/bot${apiToken}`;
 
 // Устанавливаем webhook
 bot.telegram.setWebhook(webhookUrl);
